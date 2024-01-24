@@ -5,8 +5,11 @@ window.submitReport = function() {
     const name = document.getElementById('name').value;
     console.log(`Report Type: ${reportType}, Description: ${description}, Location: ${location}, Name: ${name}`);
     
+ 
+ 
     document.getElementById('reportForm').reset();
 }
+
   
   function searchReports() {
   
