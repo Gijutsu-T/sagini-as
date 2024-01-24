@@ -1,0 +1,12 @@
+{
+  "name": "sagini-alert",
+  "version": "1.0.0",
+  "description": "Alert system for missing people",
+  "main": "sagini.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
