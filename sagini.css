@@ -6,7 +6,7 @@ body {
   }
   
   header {
-    background-color: #333;
+    background-color:transparent;
     color: white;
     text-align: center;
     padding: 1em; 
@@ -39,3 +39,48 @@ body {
   button:hover {
     background-color: #555;
   }
+
+  /* Existing CSS styles remain unchanged */
+
+.menu-bar {
+  display: flex;
+  justify-content: space-around;
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  position: fixed;
+  width: 100%;
+  top: 60px;
+  border-radius: 100px;
+}
+
+.menu-item {
+  cursor: pointer;
+}
+#car, #person, #other {
+  transition: transform 0.3s ease-in-out;
+}
+#submitBtn {
+  background-color: #e74c3c; /* Red color for Submit Report button */
+  color: white;
+  cursor: pointer;
+}
+#car.active, #person.active, #other.active {
+  transform: translateX(50%);
+}
+
+#car {
+  background-color: #3498db;
+}
+
+#person {
+  background-color: #2ecc71;
+}
+
+#other {
+  background-color: #e74c3c;
+}
+
+.form-fields {
+  display: none;
+}

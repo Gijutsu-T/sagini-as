@@ -11,47 +11,62 @@
 <body>
 
   <header>
-    <h1>Missing Persons/Cars Reporting System</h1> 
+    <h1>Missing Persons/Cars Reporting System</h1>
   </header>
 
-  <section>
+  <div class="menu-bar">
+    <div id="car" class="menu-item" onclick="showForm('Car')">Car</div>
+    <div id="person" class="menu-item" onclick="showForm('Person')">Person</div>
+    <div id="other" class="menu-item" onclick="showForm('Other')">Other Objects</div>
+  </div>
+
+  <section id="form-section">
 
     <form id="reportForm">
-      <label for="reportType">Report Type:</label>
-      <select id="reportType" required>
-        <option value="person">Missing Person</option>
-        <option value="car">Missing Car</option>
-      </select>
-
+      <!-- Common Fields -->
       <label for="name">Name:</label>
       <input type="text" id="name" required>
 
+      <label for="description">Description:</label>
+      <textarea id="description" rows="4" required></textarea>
+
+      <label for="location">Last Known Location:</label>
+      <input type="text" id="location" required>
+
+      <!-- Additional Fields for Car -->
+      <div id="carFields" class="form-fields">
+        <label for="carType">Car Type:</label>
+        <input type="text" id="carType">
+      </div>
+
+      <!-- Additional Fields for Person -->
+      <div id="personFields" class="form-fields">
         <label for="age">Age:</label>
         <input type="number" id="age" required>
 
         <label for="gender">Gender:</label>
         <select id="gender" required>
-           <option value="male">Male</option>
-           <option value="female">Female</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
         </select>
 
-      <label for="height">Height:</label>
-      <input type="number" id="height" required>
+        <label for="height">Height:</label>
+        <input type="number" id="height" required>
+      </div>
 
-      <label for="description">Description:</label>
-      <textarea id="description" rows="4" required></textarea>
+      <!-- Additional Fields for Other Objects -->
+      <div id="otherFields" class="form-fields">
+        <!-- Add fields as needed for Other Objects -->
+      </div>
 
-      <label for="location">Last Known Location:</label>  
-      <input type="text" id="location" required>
-
-      <button type="button" onclick="submitReport()">Submit Report</button>
+      <button type="button" id="submitBtn" onclick="submitReport()">Submit Report</button>
     </form>
 
     <h2>Search Missing Persons/Cars</h2>
 
     <label for="search">Search:</label>
-    <input type="text" id="search" oninput="searchReports()">
-    
+    <input type="text" id="search" oninput="searchReports">
+
     <ul id="results"></ul>
 
   </section>
@@ -59,4 +74,5 @@
   <script src="sagini.js"></script>
 
 </body>
+
 </html>

@@ -1,3 +1,17 @@
+function showForm(type) {
+  // Hide all form fields
+  document.querySelectorAll('.form-fields').forEach(field => {
+    field.style.display = 'none';
+  });
+
+  // Show the specific form fields based on the selected type
+  const typeFields = document.getElementById(`${type.toLowerCase()}Fields`);
+  if (typeFields) {
+    typeFields.style.display = 'block';
+  }
+}
+ 
+// Submit a report
 window.submitReport = function() {
     const reportType = document.getElementById('reportType').value;
     const description = document.getElementById('description').value;
