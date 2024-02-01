@@ -18,17 +18,16 @@ window.submitReport = function() {
     const resultsContainer = document.getElementById('results');
     
     resultsContainer.innerHTML = '';
-  
-    // Fetch and display search results from server
     
-    const fakeResults = ['John Doe', 'Blue Sedan', 'Jane Smith'];
-  
-    fakeResults.forEach(result => {
-      if (result.toLowerCase().includes(searchTerm)) {
-        const li = document.createElement('li');
-        li.textContent = result;
-        resultsContainer.appendChild(li);
-      }
+    // Fetch and display search results from the server
+  fetch(`/search?term=${searchTerm}`) // Modify the endpoint based on your server implementation
+  .then(response => response.json())
+  .then(data => {
+    data.forEach(result => {
+      const li = document.createElement('li');
+      li.textContent = result;
+      resultsContainer.appendChild(li);
     });
-    
-  }
+  })
+  .catch(error => console.error('Error fetching search results:', error));
+}
