@@ -1,53 +1,71 @@
 
+// index.js
+
 import firebase from 'firebase/app';
+import 'firebase/database';
 
-async function main() {
-  // Get a reference to the database
-  const db = firebase.database();
+const models = require('./models');
 
-  // Reference to the "reports" node in the database
-  const reportsRef = db.ref('reports');
+const data = {
+  name: 'Test'  
+};
 
-  // Read existing reports
-  reportsRef.once('value', (snapshot) => {
-    const reports = snapshot.val();
-    console.log('Reports before update:', reports);
+const key = await models.saveData(data, 'reports');
 
-    if (reports) {
-      // Get the key of the first report
-      const reportKeys = Object.keys(reports);
-      const firstReportKey = reportKeys[0];
-      
-      // Update the first report
-      const updates = {};
-      updates[`${firstReportKey}/name`] = 'Updated Name';
-      updates[`${firstReportKey}/lastSeen`] = 'Updated Location';
-      reportsRef.update(updates);
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyD_CF_VYwKz_xH1pol39O-gbcq3L-_ANYQ",
+  authDomain: "sagini-alert.firebaseapp.com",
+  databaseURL: "https://sagini-alert-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "sagini-alert",
+  storageBucket: "sagini-alert.appspot.com",
+  messagingSenderId: "407884373806",
+  appId: "1:407884373806:web:6bb2e7902c6eca413224bf",
+  measurementId: "G-XE9KDHLFHN"
+};
 
-      console.log('Report updated successfully!');
-    } else {
-      console.log('No existing reports to update.');
-    }
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Get database reference
+const db = firebase.database();
+
+// Reference 'reports' collection
+const reportsRef = db.ref('reports');
+
+// Add new report
+const newReportRef = reportsRef.push({
+  name: 'John Doe',
+  age: 30,
+  location: 'New York' 
+});
+
+// Read reports
+reportsRef.on('value', snapshot => {
+  const reports = snapshot.val();
+  console.log(reports);
+}, error => {
+  console.error(error);  
+});
+
+// Update a report
+reportsRef.child(newReportRef.key)
+  .update({
+    name: 'Jane Doe'
   });
 
-  // Create a new report
-  const newReportData = {
-    name: 'New Report Name',
-    age: 25,
-    gender: 'Male',
-    height: 180,
-    description: 'New report description',
-    lastSeenLocation: 'New Location',
-  };
+// Delete a report
+reportsRef.child(newReportRef.key).remove();
 
-  const newReportRef = reportsRef.push(newReportData);
-  console.log('New report created successfully with key:', newReportRef.key);
+// Listen for changes
+reportsRef.on('child_added', snapshot => {
+  console.log('New report added:', snapshot.val());
+});
 
-  // Read after creation
-  reportsRef.once('value', (snapshot) => {
-    const reports = snapshot.val();
-    console.log('Reports after creation:', reports);
-  });
-}
+reportsRef.on('child_changed', snapshot => {
+  console.log('Report updated:', snapshot.val());  
+});
 
-main();
+reportsRef.on('child_removed', snapshot => {
+  console.log('Report removed:', snapshot.val());
+});

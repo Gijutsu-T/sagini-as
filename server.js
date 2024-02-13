@@ -27,16 +27,38 @@ app.use(express.static(path.join(__dirname, '.')));
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'sagini.html'));
 });
-// Route to handle creating a missing person
-app.post('/missing-persons', async (req, res) => {
-  try {
-    await firebase.database().ref('missing-persons').push(req.body);
-    console.log('Person created:', req.body); // Log the created person to the console
-    res.status(201).json(req.body);
-  } catch (error) {
-    console.error('Error creating missing person:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
+
+
+// Create missing person
+app.post('/missing-persons', (req, res) => {
+
+  const newPerson = req.body;
+
+  // Use db reference
+  db.ref('missing-persons').push(newPerson, (error) => { 
+    if (error) {
+      console.log(error);
+      return res.status(500).send('Error creating missing person');  
+    } else {
+      return res.status(201).send('Missing person created');
+    }
+  });
+
+});
+
+
+// Get all missing persons
+app.get('/missing-persons', (req, res) => {
+
+  // Use db reference
+  db.ref('missing-persons').on('value', snapshot => {
+    const data = snapshot.val();
+    res.json(data);
+  }, error => {
+    console.log(error);
+    res.status(500).send('Error retrieving missing persons');
+  });
+
 });
 
 // Start the server
