@@ -1,17 +1,14 @@
-// models.js
+const firebase = require('firebase/app');
 
-const mongoose = require('mongoose');
+// Function to save a new report to the database
+async function saveReport(reportData, reportType) {
+  const db = firebase.database();
+  const reportsRef = db.ref(reportType); // Replace 'reports' with the report type
+  const newReportRef = reportsRef.push(reportData);
+  return newReportRef.key;
+}
 
-const missingPersonSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  age: { type: Number, required: true },
-  gender: { type: String, required: true }, // Added gender field
-  height: { type: Number, required: true }, // Added height field
-  description: String,
-  lastSeenLocation: String,
-  // Add other fields as needed
-});
-
-const Report = mongoose.model('Report', missingPersonSchema);
-
-module.exports = Report;
+// Export the function to save a report
+module.exports = {
+  saveReport,
+};

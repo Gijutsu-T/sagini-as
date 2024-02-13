@@ -1,17 +1,23 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const mongoose = require('mongoose');
-const Report = require('./models');
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/missing_persons_db');
+const firebase = require('firebase/app');
+require('firebase/database');
 
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', () => {
-  console.log('Connected to MongoDB!');
-});
-
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyD_CF_VYwKz_xH1pol39O-gbcq3L-_ANYQ",
+  authDomain: "sagini-alert.firebaseapp.com",
+  databaseURL: "https://sagini-alert-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "sagini-alert",
+  storageBucket: "sagini-alert.appspot.com",
+  messagingSenderId: "407884373806",
+  appId: "1:407884373806:web:6bb2e7902c6eca413224bf",
+  measurementId: "G-XE9KDHLFHN"
+};
+ 
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
 // Add middleware to parse JSON data
 app.use(express.json());
@@ -24,9 +30,9 @@ app.get('/', function(req, res) {
 // Route to handle creating a missing person
 app.post('/missing-persons', async (req, res) => {
   try {
-    const newPerson = await Report.create(req.body);
-    console.log('Person created:', newPerson); // Log the created person to the console
-    res.status(201).json(newPerson);
+    await firebase.database().ref('missing-persons').push(req.body);
+    console.log('Person created:', req.body); // Log the created person to the console
+    res.status(201).json(req.body);
   } catch (error) {
     console.error('Error creating missing person:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -37,8 +43,4 @@ app.post('/missing-persons', async (req, res) => {
 const PORT = 4000;
 app.listen(PORT, function () {
   console.log(`App listening on port ${PORT}!`);
-});
-
-app.listen(4000, function () {
-  console.log('App listening on port 4000!');
 });

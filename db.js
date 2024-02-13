@@ -1,21 +1,21 @@
 // db.js
 
-const mongoose = require('mongoose');
+const firebase = require('firebase/app');
+require('firebase/database');
 
-// Replace 'missing_persons_db' with the name of your MongoDB database
-const dbName = 'missing_persons_db';
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyD_CF_VYwKz_xH1pol39O-gbcq3L-_ANYQ",
+  authDomain: "sagini-alert.firebaseapp.com",
+  databaseURL: "https://sagini-alert-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "sagini-alert",
+  storageBucket: "sagini-alert.appspot.com",
+  messagingSenderId: "407884373806",
+  appId: "1:407884373806:web:6bb2e7902c6eca413224bf",
+  measurementId: "G-XE9KDHLFHN"
+};
 
-mongoose.connect(dbName, { useNewUrlParser: true, useUnifiedTopology: true })
-.then(() => {
-  console.log('Connected to DB');
-})
-.catch((err) => console.log(err));
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
-const db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', function() {
-  console.log('Connected to MongoDB!');
-});
-
-module.exports = mongoose;
+module.exports = firebase;

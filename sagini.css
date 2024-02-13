@@ -6,7 +6,7 @@ body {
   }
   
   header {
-    background-color:transparent;
+    background-color:black;
     color: white;
     text-align: center;
     padding: 1em; 
@@ -48,9 +48,8 @@ body {
   background-color: #333;
   color: white;
   padding: 10px;
-  position: fixed;
   width: 100%;
-  top: 60px;
+  top: 100px;
   border-radius: 100px;
 }
 

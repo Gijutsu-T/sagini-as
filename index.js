@@ -1,49 +1,53 @@
-// index.js
 
-require('./db');
-const Report = require('./models/Report');
+import firebase from 'firebase/app';
 
 async function main() {
+  // Get a reference to the database
+  const db = firebase.database();
+
+  // Reference to the "reports" node in the database
+  const reportsRef = db.ref('reports');
+
   // Read existing reports
-  const reportsBeforeUpdate = await Report.find();
-  console.log('Reports before update:', reportsBeforeUpdate);
+  reportsRef.once('value', (snapshot) => {
+    const reports = snapshot.val();
+    console.log('Reports before update:', reports);
 
-  // If there are existing reports, update the first one
-  if (reportsBeforeUpdate.length > 0) {
-    const firstReport = reportsBeforeUpdate[0];
-    const id = firstReport._id;
+    if (reports) {
+      // Get the key of the first report
+      const reportKeys = Object.keys(reports);
+      const firstReportKey = reportKeys[0];
+      
+      // Update the first report
+      const updates = {};
+      updates[`${firstReportKey}/name`] = 'Updated Name';
+      updates[`${firstReportKey}/lastSeen`] = 'Updated Location';
+      reportsRef.update(updates);
 
-    // Update
-    await Report.updateOne({ _id: id }, {
-      name: 'Updated Name', // Updated name
-      lastSeen: 'Updated Location', // Updated location
-    });
-
-    console.log('Report updated successfully!');
-  } else {
-    console.log('No existing reports to update.');
-  }
-
-  // Read after update
-  const reportsAfterUpdate = await Report.find();
-  console.log('Reports after update:', reportsAfterUpdate);
+      console.log('Report updated successfully!');
+    } else {
+      console.log('No existing reports to update.');
+    }
+  });
 
   // Create a new report
-  const newReport = new Report({
+  const newReportData = {
     name: 'New Report Name',
     age: 25,
     gender: 'Male',
     height: 180,
     description: 'New report description',
     lastSeenLocation: 'New Location',
-  });
+  };
 
-  const savedNewReport = await newReport.save();
-  console.log('New report created successfully:', savedNewReport);
+  const newReportRef = reportsRef.push(newReportData);
+  console.log('New report created successfully with key:', newReportRef.key);
 
   // Read after creation
-  const reportsAfterCreation = await Report.find();
-  console.log('Reports after creation:', reportsAfterCreation);
+  reportsRef.once('value', (snapshot) => {
+    const reports = snapshot.val();
+    console.log('Reports after creation:', reports);
+  });
 }
 
 main();
