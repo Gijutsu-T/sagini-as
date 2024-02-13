@@ -1,4 +1,6 @@
+//models.js
 const firebase = require('firebase/app');
+const { models } = require('mongoose');
 require('firebase/database');
 
 // Firebase config
@@ -16,13 +18,9 @@ firebase.initializeApp(firebaseConfig);
 
 // Function to save a new report to the database
 async function saveData(data, node) {
-
   const db = firebase.database();
-  
   const ref = db.ref(node);
-  
   const newRef = await ref.push(data);
-  
   return newRef.key;
 
 }

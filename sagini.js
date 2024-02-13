@@ -52,30 +52,20 @@ window.submitReport = function() {
     console.error('One or more form elements not found.');
   }
 }
-      // Reset the form
-                    document.getElementById('reportForm').reset();
-          {
-                    console.error('One or more form elements not found.');
-                } // Add this closing curly brace
 
-                
-                function searchReports() {
-                
-                  const searchTerm = document.getElementById('search').value.toLowerCase();
+function searchReports() {
+  const resultsContainer = document.getElementById('results');
+  resultsContainer.innerHTML = '';
+}
                   
-                  const resultsContainer = document.getElementById('results');
-                  
-                  resultsContainer.innerHTML = '';
-                  
-                  // Fetch and display search results from the server
-                fetch(`/search?term=${searchTerm}`) // Modify the endpoint based on your server implementation
-                .then(response => response.json())
-                .then(data => {
-                  data.forEach(result => {
-                    const li = document.createElement('li');
-                    li.textContent = result;
-                    resultsContainer.appendChild(li);
-                  });
-                })
-                .catch(error => console.error('Error fetching search results:', error));
-  }
+// Fetch and display search results from the server
+fetch(`/search?term=${searchTerm}`) // Pass searchTerm as a query parameter
+.then(response => response.json())
+.then(data => {
+  data.forEach(result => {
+    const li = document.createElement('li');
+    li.textContent = result;
+    resultsContainer.appendChild(li);
+  });
+})
+.catch(error => console.error('Error fetching search results:', error)); 

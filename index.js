@@ -1,9 +1,7 @@
-
 // index.js
 
 import firebase from 'firebase/app';
 import 'firebase/database';
-
 const models = require('./models');
 
 const data = {
@@ -34,10 +32,14 @@ const db = firebase.database();
 const reportsRef = db.ref('reports');
 
 // Add new report
-const newReportRef = reportsRef.push({
+reportsRef.push({
   name: 'John Doe',
   age: 30,
-  location: 'New York' 
+  location: 'New York'
+}).then(() => {
+  console.log('Report added successfully');
+}).catch((error) => {
+  console.error('Error adding report:', error);
 });
 
 // Read reports
