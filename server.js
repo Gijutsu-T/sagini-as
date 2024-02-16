@@ -2,9 +2,9 @@
 const path = require('path'); // Import the 'path' module
 const express = require('express'); // Import the 'express' module
 const firebase = require('firebase/app'); // Import the 'firebase/app' module
-const app = express();
+const app = firebase.app();
 require('firebase/database');
-import { getDatabase } from 'firebase/database'; 
+const { getDatabase } = require('firebase/database');
 
 // Firebase configuration
 const firebaseConfig = {
