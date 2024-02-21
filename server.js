@@ -1,10 +1,8 @@
 //server.js
 const path = require('path'); // Import the 'path' module
 const express = require('express'); // Import the 'express' module
-const firebase = require('firebase/app'); // Import the 'firebase/app' module
-const app = firebase.app();
-require('firebase/database');
-const { getDatabase } = require('firebase/database');
+const firebase = require('firebase/compat/app'); // Import the 'firebase/app' module
+require('firebase/compat/database')// Import the 'firebase/database' module
 
 // Firebase configuration
 const firebaseConfig = {
@@ -16,15 +14,14 @@ const firebaseConfig = {
     messagingSenderId: "407884373806",
     appId: "1:407884373806:web:6bb2e7902c6eca413224bf",
     measurementId: "G-XE9KDHLFHN"
-};
+}; 
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig); // Initialize the Firebase app
+firebase.initializeApp(firebaseConfig);
 
-// Get database reference
-const db = getDatabase(app); // Get a reference to the database
-
-// Add middleware to parse JSON data
+// Create an Express application
+const app = express();
+// middleware to parse JSON data
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, '.')));
@@ -32,6 +29,9 @@ app.use(express.static(path.join(__dirname, '.')));
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'sagini.html'));
 });
+
+
+const db = firebase.database(); // Get a reference to the database
 
 // Create missing person
 app.post('/missing-persons', (req, res) => {
