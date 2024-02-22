@@ -6,22 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Missing Persons/Cars</title>
   <link rel="stylesheet" href="sagini.css">
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <script src="sagini.js"></script>
+
 </head>
 
 <body>
-
   <header>
     <h1>Missing Persons/Cars Reporting System</h1>
   </header>
 
   <div class="menu-bar">
-    <div id="car" class="menu-item" onclick="showForm('Car')">Car</div>
-    <div id="person" class="menu-item" onclick="showForm('Person')">Person</div>
-    <div id="other" class="menu-item" onclick="showForm('Other')">Other Objects</div>
+    <ul>
+    <li id="car" class="menu-item" onclick="showForm('Car')">Car</li>
+    <li id="person" class="menu-item" onclick="showForm('Person')">Person</li>
+    <li id="other" class="menu-item" onclick="showForm('Other')">Other Objects</li>
+    </ul>
   </div>
 
   <section id="form-section">
-
     <form id="reportForm">
       <!-- Common Fields -->
       <label for="name">Name:</label>
@@ -63,16 +68,11 @@
     </form>
 
     <h2>Search Missing Persons/Cars</h2>
-
     <label for="search">Search:</label>
     <input type="text" id="search" oninput="searchReports">
-
     <ul id="results"></ul>
-
   </section>
-
-  <script src="sagini.js"></script>
-
+  
 </body>
 
 </html>
