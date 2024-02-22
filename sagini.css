@@ -3,6 +3,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    margin-top: 80px;
   }
   
   header {
@@ -42,70 +43,80 @@ body {
 
   /* Existing CSS styles remain unchanged */
 
-  .menu-bar {
+  menu-bar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center; /* Center the items vertically */
+    background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
+    backdrop-filter: blur(10px);
+    padding: 10px;
+    position: fixed;
+    width: 100vw;
+    top: 60px;
+    border-radius: 25px; /* Slightly rounded corners */
+    box-sizing: border-box;
+  }
+
+  .menu-bar ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+  }  
+  
+  .menu-item {
+    color: white;
+  font-family: sans-serif;
+  font-weight: bold;
+  padding: 12px 16px;
+  margin: 0 8px; 
+  position: relative;
+  cursor: pointer;
+  white-space: nowrap;
+  border-radius: 25px;
+  }
+  #car, #person, #other {
+    transition: transform 0.3s ease-in-out;
+  }
+  .menu-item::before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    transition: 0.2s;
     border-radius: 25px;
-    height: fit-content;
-    display: inline-flex;
-    background-color: rgba(0, 0, 0, .4);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);  
-    align-items: center;
-    padding: 0 10px;
-    margin: 50px 0 0 0;
-    li {
-      list-style: none;
-      color: white;
-      font-family: sans-serif;
-      font-weight: bold;
-      padding: 12px 16px;
-      margin: 0 8px;
-      position: relative;
-      cursor: pointer;
-      white-space: nowrap;
-      &::before {
-        content: " ";
-        position: absolute;
-        top: 0;
-        left:0;
-        height:100%;
-        width: 100%;
-        z-index:-1;
-        transition: .2s;
-        border-radius: 25px;
-      }
-        &:hover {
-          &::before {
-            background: linear-gradient(to bottom, #e8edec, #d2d1d3);
-              box-shadow: 0px 3px 20px 0px black;
-              transform: scale(1.2);
-          }
-          color: black;
-      }
-    }
+  }
+
+  .menu-item:hover::before {
+    background: linear-gradient(to bottom, #e8edec, #d2d1d3);
+    box-shadow: 0px 3px 20px 0px black;
+    transform: scale(1.2);
   }
   
-#car, #person, #other {
-  transition: transform 0.3s ease-in-out;
-}
+  .menu-item:hover {
+    color: black;
+  }
+  
+  /* Styling for active menu item */
+  .menu-item.active { 
+    transform: translateX(50%); /* Or a smaller value for less movement */
+    background-color: #333;
+  }
+
+#car { background-color: #3498db; }
+#person { background-color: #2ecc71; }
+#other { background-color: #e74c3c; }
+
 #submitBtn {
-  background-color: #e74c3c; /* Red color for Submit Report button */
+  background-color: #007bff;
   color: white;
   cursor: pointer;
 }
 #car.active, #person.active, #other.active {
   transform: translateX(50%);
-}
-
-#car {
-  background-color: #3498db;
-}
-
-#person {
-  background-color: #2ecc71;
-}
-
-#other {
-  background-color: #e74c3c;
 }
 
 .form-fields {

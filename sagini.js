@@ -12,6 +12,30 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+function showForm(formName) {
+  // Hide all form fields (modify the selector if needed)
+  document.querySelectorAll('.form-fields').forEach(form => form.style.display = 'none');
+
+  // Show the selected form (adjust if needed)
+  if (formName) { // Make sure formName is provided
+    document.getElementById(formName).style.display = 'block'; 
+  }
+}
+
+const menuItems = document.querySelectorAll('.menu-item');
+menuItems.forEach(item => {item.addEventListener('click', function() {
+  // Remove 'active' class from any previously active item
+  document.querySelector('.menu-item.active').classList.remove('active'); 
+
+  // Add 'active' class to the clicked item
+  this.classList.add('active');
+
+  // Call showForm with the correct form name
+  showForm(this.id); 
+});
+});
+
+
 function showForm(type) {
   // Hide all form fields
   document.querySelectorAll('.form-fields').forEach(field => {
