@@ -1,30 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-
+  
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Missing Persons/Cars</title>
   <link rel="stylesheet" href="sagini.css">
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
+  <script src="https://unpkg.com/feather-icons"></script>
   <script src="sagini.js"></script>
 
 </head>
 
 <body>
-  <header>
-    <h1>Missing Persons/Cars Reporting System</h1>
-  </header>
+  <div class="header">  
+    <div class="header__logo">
+      <strong>SAGINI SYSTEM</strong>
+    </div>
 
-  <div class="menu-bar">
-    <ul>
-    <li id="car" class="menu-item" onclick="showForm('Car')">Car</li>
-    <li id="person" class="menu-item" onclick="showForm('Person')">Person</li>
-    <li id="other" class="menu-item" onclick="showForm('Other')">Other Objects</li>
-    </ul>
+    
+    <nav class="navbar">
+      <ul class="navbar__menu">
+        <li class="navbar__item">
+          <a href="#" class="navbar__link"><img src="images/feather/home.svg" alt="home Icon"><span>Home</span> </a>
+        </li>
+        <li class="navbar__item">
+          <a href="#" class="navbar__link"><img src="images/feather/truck.svg" alt="truck Icon"><span>CARS</span></a>        
+        </li>
+        <li class="navbar__item">
+          <a href="#" class="navbar__link"><img src="images/feather/users.svg" alt="users Icon"><span>Persons</span></a>        
+        </li>
+        <li class="navbar__item">
+          <a href="#" class="navbar__link"><img src="images/feather/folder.svg" alt="folder Icon"><span>Objects</span></a>        
+        </li>
+        <li class="navbar__item">
+          <a href="#" class="navbar__link"><img src="images/feather/upload.svg" alt="upload Icon"><span>Uploads</span></a>        
+        </li>
+        <li class="navbar__item" onclick="showFo>
+            <a href="#" class="navbar__link"><img src="images/feather/map-pin.svg" alt="map-pin Icon"><span>LAST SEEN</span></a>        
+        </li>
+      </ul>
+    </nav>
   </div>
+  
 
   <section id="form-section">
     <form id="reportForm">

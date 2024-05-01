@@ -120,3 +120,6 @@ function fetchSearchResults(searchTerm) {
     })
     .catch(error => console.error('Error fetching search results:', error));
 }
+<script src="https://unpkg.com/feather-icons"></script>
+
+feather.replace()
