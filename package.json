@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
+    "feather-icons": "^4.29.2",
     "firebase": "^10.8.0",
     "http-server": "^14.1.1",
     "mongoose": "^8.1.1"
