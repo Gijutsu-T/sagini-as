@@ -9,78 +9,109 @@ const firebaseConfig = {
   measurementId: "G-XE9KDHLFHN"
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
-function showForm(formName) {
-  // Hide all form fields (modify the selector if needed)
-  document.querySelectorAll('.form-fields').forEach(form => form.style.display = 'none');
-
-  // Show the selected form (adjust if needed)
-  if (formName) { // Make sure formName is provided
-    document.getElementById(formName).style.display = 'block'; 
-  }
+// Sign up new users
+function signUp(email, password) {
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      // Signed up successfully
+      var user = userCredential.user;
+      console.log("User signed up:", user);
+    })
+    .catch((error) => {
+      console.error("Error signing up:", error);
+    });
 }
 
-const menuItems = document.querySelectorAll('.menu-item');
-menuItems.forEach(item => {item.addEventListener('click', function() {
-  // Remove 'active' class from any previously active item
-  document.querySelector('.menu-item.active').classList.remove('active'); 
+// Sign in existing users
+function signIn(email, password) {
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      // Signed in successfully
+      var user = userCredential.user;
+      console.log("User signed in:", user);
+    })
+    .catch((error) => {
+      console.error("Error signing in:", error);
+    });
+}
 
-  // Add 'active' class to the clicked item
-  this.classList.add('active');
 
-  // Call showForm with the correct form name
-  showForm(this.id); 
-});
-});
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+var reportsDB = firebase.database().ref('reportForm');
 
+document.getElementById('reportForm').addEventListener("submit",submitForm)
 
 function showForm(type) {
   // Hide all form fields
-  document.querySelectorAll('.form-fields').forEach(field => {
-    field.style.display = 'none';
-  });
+  document.getElementById('carFields').style.display = 'none';
+  document.getElementById('personFields').style.display = 'none';
+  document.getElementById('otherFields').style.display = 'none';
 
-  // Show the specific form fields based on the selected type
-  const typeFields = document.getElementById(`${type.toLowerCase()}Fields`);
-  if (typeFields) {
-    typeFields.style.display = 'block';
+
+  // Remove required attributes from hidden fields
+  document.getElementById('age').removeAttribute('required');
+  document.getElementById('gender').removeAttribute('required');
+  document.getElementById('height').removeAttribute('required');
+  document.getElementById('carType').removeAttribute('required');
+
+  // Show the relevant form fields based on the type and set required attributes
+  if (type === 'Car') {
+    document.getElementById('carFields').style.display = 'block';
+    document.getElementById('carType').setAttribute('required', '');
+  } else if (type === 'Person') {
+    document.getElementById('personFields').style.display = 'block';
+    document.getElementById('age').setAttribute('required', '');
+    document.getElementById('gender').setAttribute('required', '');
+    document.getElementById('height').setAttribute('required', '');
+  } else if (type === 'Object') {
+    window.location.href = 'Database.html';
   }
 }
 
-// Submit a report
-function submitReport() {
-  const reportTypeElement = document.getElementById('reportType');
+function submitReport(event) {
+  event.preventDefault(); // Prevent the form from submitting the traditional way
+
+  const nameElement = document.getElementById('name');
   const descriptionElement = document.getElementById('description');
   const locationElement = document.getElementById('location');
-  const nameElement = document.getElementById('name');
-
-  if (reportTypeElement && descriptionElement && locationElement && nameElement) {
-    const reportType = reportTypeElement.value;
+  const reportTypeElement = document.querySelector('.navbar__item.active');
+ 
+  if (nameElement && descriptionElement && locationElement && reportTypeElement) {
+    const name = nameElement.value;
     const description = descriptionElement.value;
     const location = locationElement.value;
-    const name = nameElement.value;
+    const reportType = reportTypeElement.id;
 
-    // Get a reference to the database
-    var database = firebase.database();
-    var reportsRef = database.ref('reports');
+    let additionalData = {};
 
-    console.log(`Report Type: ${reportType}, Description: ${description}, Location: ${location}, Name: ${name}`);
-    // Create a new report object
-    var newReportData = {
-      reportType: reportType,
+    if (reportType === 'car') {
+      const carTypeElement = document.getElementById('carType');
+      if (carTypeElement) {
+        additionalData.carType = carTypeElement.value;
+      }
+    } else if (reportType === 'person') {
+      const ageElement = document.getElementById('age');
+      const genderElement = document.getElementById('gender');
+      const heightElement = document.getElementById('height');
+      if (ageElement && genderElement && heightElement) {
+        additionalData.age = ageElement.value;
+        additionalData.gender = genderElement.value;
+        additionalData.height = heightElement.value;
+      }
+    }
+
+    const newReportData = {
+      name: name,
       description: description,
       location: location,
-      name: name
+      reportType: reportType,
+      ...additionalData
     };
 
-    // Add the new report data to the database under a new auto-generated key
-    reportsRef.push(newReportData)
+    reportsDB.push(newReportData)
       .then(function(snapshot) {
         console.log("Report added successfully:", snapshot.key);
-
-        // Reset the form
         document.getElementById('reportForm').reset();
       })
       .catch(function(error) {
@@ -91,35 +122,26 @@ function submitReport() {
   }
 }
 
-const searchInput = document.getElementById('search');
-searchInput.addEventListener('input', handleSearch);
+document.getElementById('reportForm').addEventListener('submit', submitReport);
 
-function handleSearch() {
-  const searchTerm = searchInput.value.trim();
+function searchReports() {
+  const searchTerm = document.getElementById('search').value.trim();
+  const resultsContainer = document.getElementById('results');
+  resultsContainer.innerHTML = '';
 
   if (searchTerm) {
-    fetchSearchResults(searchTerm);
-  } else {
-    const resultsContainer = document.getElementById('results');
-    resultsContainer.innerHTML = '';
+    // Example fetch call to a backend search endpoint
+    fetch(`/search?term=${searchTerm}`)
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(result => {
+          const li = document.createElement('li');
+          li.textContent = result;
+          resultsContainer.appendChild(li);
+        });
+      })
+      .catch(error => console.error('Error fetching search results:', error));
   }
 }
 
-function fetchSearchResults(searchTerm) {
-  const resultsContainer = document.getElementById('results');
-  resultsContainer.innerHTML = ''; // Clear previous results
-
-  fetch(`/search?term=${searchTerm}`) // Pass searchTerm as a query parameter
-    .then(response => response.json())
-    .then(data => {
-      data.forEach(result => {
-        const li = document.createElement('li');
-        li.textContent = result;
-        resultsContainer.appendChild(li);
-      });
-    })
-    .catch(error => console.error('Error fetching search results:', error));
-}
-<script src="https://unpkg.com/feather-icons"></script>
-
-feather.replace()
+document.getElementById('search').addEventListener('input', searchReports);

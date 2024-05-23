@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Search Missing Persons/Cars/Pets/Valuables</title>
+  <link rel="stylesheet" href="sagini.css">
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="sagini.js"></script>
+</head>
+<body>
+  <div class="header">  
+    <div class="header__logo">
+      <strong>SAGINI SYSTEM</strong>
+    </div>
+    
+    <nav class="navbar">
+      <ul class="navbar__menu">
+        <li class="navbar__item">
+          <a href="index.html" class="navbar__link"><img src="images/feather/home.svg" alt="home Icon"><span>Home</span></a>
+        </li>
+        <li class="navbar__item">
+          <a href="Database.html" class="navbar__link"><img src="images/feather/search.svg" alt="search Icon"><span>Search</span></a>
+        </li>
+        <li class="navbar__item">
+          <a href="#" class="navbar__link"><img src="images/feather/upload.svg" alt="upload Icon"><span>Uploads</span></a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <section id="search-section">
+    <h2>Search Missing Persons/Cars/Pets/Valuables</h2>
+    <form id="searchForm">
+      <label for="searchType">Search Type:</label>
+      <select id="searchType" onchange="toggleSearchFields()">
+        <option value="Person">Person</option>
+        <option value="Car">Car</option>
+        <option value="Pet">Pet</option>
+        <option value="Valuable">Valuable</option>
+      </select>
+
+      <div id="personSearchFields" class="search-fields">
+        <label for="searchName">Name:</label>
+        <input type="text" id="searchName">
+        
+        <label for="searchAge">Age:</label>
+        <input type="number" id="searchAge">
+        
+        <label for="searchGender">Gender:</label>
+        <select id="searchGender">
+          <option value="">Any</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+
+      <div id="carSearchFields" class="search-fields" style="display: none;">
+        <label for="searchCarType">Car Type:</label>
+        <input type="text" id="searchCarType">
+        
+        <label for="searchCarModel">Car Model:</label>
+        <input type="text" id="searchCarModel">
+      </div>
+
+      <div id="petSearchFields" class="search-fields" style="display: none;">
+        <label for="searchPetType">Pet Type:</label>
+        <input type="text" id="searchPetType">
+        
+        <label for="searchPetName">Pet Name:</label>
+        <input type="text" id="searchPetName">
+      </div>
+
+      <div id="valuableSearchFields" class="search-fields" style="display: none;">
+        <label for="searchValuableType">Valuable Type:</label>
+        <input type="text" id="searchValuableType">
+        
+        <label for="searchValuableDescription">Description:</label>
+        <input type="text" id="searchValuableDescription">
+      </div>
+
+      <button type="button" onclick="searchDatabase()">Search</button>
+    </form>
+
+    <div id="results">
+      <!-- Search results will be displayed here -->
+    </div>
+  </section>
+
+  <script>
+    function toggleSearchFields() {
+      const searchType = document.getElementById('searchType').value;
+      document.querySelectorAll('.search-fields').forEach(field => field.style.display = 'none');
+      if (searchType === 'Person') {
+        document.getElementById('personSearchFields').style.display = 'block';
+      } else if (searchType === 'Car') {
+        document.getElementById('carSearchFields').style.display = 'block';
+      } else if (searchType === 'Pet') {
+        document.getElementById('petSearchFields').style.display = 'block';
+      } else if (searchType === 'Valuable') {
+        document.getElementById('valuableSearchFields').style.display = 'block';
+      }
+    }
+
+    function searchDatabase() {
+      const searchType = document.getElementById('searchType').value;
+      const resultsContainer = document.getElementById('results');
+      resultsContainer.innerHTML = '';
+
+      let query = {};
+      if (searchType === 'Person') {
+        const name = document.getElementById('searchName').value;
+        const age = document.getElementById('searchAge').value;
+        const gender = document.getElementById('searchGender').value;
+        
+        if (name) query.name = name;
+        if (age) query.age = age;
+        if (gender) query.gender = gender;
+      } else if (searchType === 'Car') {
+        const carType = document.getElementById('searchCarType').value;
+        const carModel = document.getElementById('searchCarModel').value;
+
+        if (carType) query.carType = carType;
+        if (carModel) query.carModel = carModel;
+      } else if (searchType === 'Pet') {
+        const petType = document.getElementById('searchPetType').value;
+        const petName = document.getElementById('searchPetName').value;
+
+        if (petType) query.petType = petType;
+        if (petName) query.petName = petName;
+      } else if (searchType === 'Valuable') {
+        const valuableType = document.getElementById('searchValuableType').value;
+        const valuableDescription = document.getElementById('searchValuableDescription').value;
+
+        if (valuableType) query.valuableType = valuableType;
+        if (valuableDescription) query.valuableDescription = valuableDescription;
+      }
+
+      // Firebase search logic
+      const dbRef = firebase.database().ref(searchType.toLowerCase() + 's'); // Adjust reference path if needed
+      dbRef.once('value', (snapshot) => {
+        const data = snapshot.val();
+        for (let key in data) {
+          let match = true;
+          for (let field in query) {
+            if (query[field] && data[key][field] !== query[field]) {
+              match = false;
+              break;
+            }
+          }
+          if (match) {
+            const resultItem = document.createElement('div');
+            resultItem.classList.add('result-item');
+            resultItem.innerHTML = `<pre>${JSON.stringify(data[key], null, 2)}</pre>`; // Replace with proper formatting
+            resultsContainer.appendChild(resultItem);
+          }
+        }
+        if (resultsContainer.innerHTML === '') {
+          resultsContainer.innerHTML = '<p>No results found</p>';
+        }
+      });
+    }
+
+    // Initialize Firebase (replace with your own config)
+    const firebaseConfig = {
+      apiKey: "your-api-key",
+      authDomain: "your-auth-domain",
+      databaseURL: "your-database-url",
+      projectId: "your-project-id",
+      storageBucket: "your-storage-bucket",
+      messagingSenderId: "your-messaging-sender-id",
+      appId: "your-app-id"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+</body>
+</html>

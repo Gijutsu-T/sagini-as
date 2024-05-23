@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-  
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,45 +7,43 @@
   <link rel="stylesheet" href="sagini.css">
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://unpkg.com/feather-icons"></script>
-  <script src="sagini.js"></script>
-
+  
 </head>
-
 <body>
   <div class="header">  
     <div class="header__logo">
-      <strong>SAGINI SYSTEM</strong>
+      <img src="images/Sagini logo.jpg" alt="Sagini Logo" class="headlogo-img">
+      <strong> SAGINI SYSTEM</strong>
     </div>
-
     
     <nav class="navbar">
       <ul class="navbar__menu">
         <li class="navbar__item">
-          <a href="#" class="navbar__link"><img src="images/feather/home.svg" alt="home Icon"><span>Home</span> </a>
+          <a href="#" class="navbar__link" onclick="showForm('Home')"><img src="images/feather/home.svg" alt="home Icon"><span>Home</span></a>
+        </li>
+        <li class="navbar__item" id="car" onclick="showForm('Car')">
+          <a href="#" class="navbar__link"><img src="images/feather/truck.svg" alt="truck Icon"><span>CARS</span></a>
+        </li>
+        <li class="navbar__item" id="person" onclick="showForm('Person')">
+          <a href="#" class="navbar__link"><img src="images/feather/users.svg" alt="users Icon"><span>Persons</span></a>
+        </li>
+        <li class="navbar__item" id="object" onclick="showForm('Object')">
+          <a href="#" class="navbar__link"><img src="images/feather/folder.svg" alt="folder Icon"><span>Database</span></a>
         </li>
         <li class="navbar__item">
-          <a href="#" class="navbar__link"><img src="images/feather/truck.svg" alt="truck Icon"><span>CARS</span></a>        
+          <a href="#" class="navbar__link"><img src="images/feather/upload.svg" alt="upload Icon"><span>Uploads</span></a>
         </li>
         <li class="navbar__item">
-          <a href="#" class="navbar__link"><img src="images/feather/users.svg" alt="users Icon"><span>Persons</span></a>        
-        </li>
-        <li class="navbar__item">
-          <a href="#" class="navbar__link"><img src="images/feather/folder.svg" alt="folder Icon"><span>Objects</span></a>        
-        </li>
-        <li class="navbar__item">
-          <a href="#" class="navbar__link"><img src="images/feather/upload.svg" alt="upload Icon"><span>Uploads</span></a>        
-        </li>
-        <li class="navbar__item" onclick="showFo>
-            <a href="#" class="navbar__link"><img src="images/feather/map-pin.svg" alt="map-pin Icon"><span>LAST SEEN</span></a>        
+          <a href="#" class="navbar__link"><img src="images/feather/map-pin.svg" alt="map-pin Icon"><span>LAST SEEN</span></a>
         </li>
       </ul>
     </nav>
   </div>
   
-
   <section id="form-section">
-    <form id="reportForm">
+    <form  id="reportForm">
       <!-- Common Fields -->
       <label for="name">Name:</label>
       <input type="text" id="name" required>
@@ -58,15 +55,15 @@
       <input type="text" id="location" required>
 
       <!-- Additional Fields for Car -->
-      <div id="carFields" class="form-fields">
+      <div id="carFields" class="form-fields" style="display: none;">
         <label for="carType">Car Type:</label>
         <input type="text" id="carType">
       </div>
 
       <!-- Additional Fields for Person -->
-      <div id="personFields" class="form-fields">
+      <div id="personFields" class="form-fields" style="display: none;">
         <label for="age">Age:</label>
-        <input type="number" id="age" required>
+        <input type="number" id="age" >
 
         <label for="gender">Gender:</label>
         <select id="gender" required>
@@ -75,23 +72,23 @@
         </select>
 
         <label for="height">Height:</label>
-        <input type="number" id="height" required>
+        <input type="number" id="height" >
       </div>
 
       <!-- Additional Fields for Other Objects -->
-      <div id="otherFields" class="form-fields">
+      <div id="otherFields" class="form-fields" style="display: none;">
         <!-- Add fields as needed for Other Objects -->
       </div>
 
-      <button type="button" id="submitBtn" onclick="submitReport()">Submit Report</button>
+      <button type="submit">Submit Report</button>
     </form>
 
-    <h2>Search Missing Persons/Cars</h2>
-    <label for="search">Search:</label>
-    <input type="text" id="search" oninput="searchReports">
-    <ul id="results"></ul>
+    
   </section>
-  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+  <script src="sagini.js"></script>
+  <script>
+    feather.replace();
+  </script>
 </body>
-
 </html>
