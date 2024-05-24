@@ -12,6 +12,15 @@ body {
     text-align: center;
     padding: 1em; 
   }
+  .header__logo {
+    display: flex;
+    align-items: center;
+}
+
+  .headlogo-img{
+    max-height: 50px; /* Adjust this value as needed */
+    margin-right: 10px;
+  }
   
   section {
     max-width: 800px;

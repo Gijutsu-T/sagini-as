@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Missing Persons/Cars</title>
+  <title>Report Missing Car - Sagini System</title>
   <link rel="stylesheet" href="sagini.css">
   <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
+  <!-- Add common header and navigation -->
+  
   <div class="header">  
     <div class="header__logo">
       <img src="images/Sagini logo.jpg" alt="Sagini Logo" class="headlogo-img">
@@ -37,16 +39,32 @@
       </ul>
     </nav>
   </div>
-  
+
   <section id="form-section">
-    <h2>Welcome to  Sagini System</h2>
-    <p>Select an option from the navbar to report missing persons, cars, or other objects.</p>
+    <form action=""  id="CarReportForm">
+      <div class="alert" > Report Recieved</div>    
+      <h2>Report Missing Car</h2>
+
+      <label for="name">Name:</label>
+      <input type="text" id="name" required>
+
+      <label for="description">Description:</label>
+      <textarea id="description" rows="4" required></textarea>
+
+      <label for="location">Last Known Location:</label>
+      <input type="text" id="location" required>
+
+      <label for="carType">Car Model:</label>
+      <input type="text" id="carModel" required>
+
+      <label for="carType">Car Color:</label>
+      <input type="text" id="carColor" required>
+
+
+      <button type="submit">Submit Report</button>
+    </form>
   </section>
-  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
-  <script src="sagini.js"></script>
-  <script>
-    feather.replace();
-  </script>
+  <script src="./saginicars.js"></script>
 </body>
 </html>
