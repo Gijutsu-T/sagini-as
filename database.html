@@ -1,178 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Search Missing Persons/Cars/Pets/Valuables</title>
-  <link rel="stylesheet" href="sagini.css">
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-  <script src="sagini.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sagini System</title>
+    <link rel="stylesheet" href="sagini.css">
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 20px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .result-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .result-item h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .result-item p {
+            margin: 5px 0;
+        }
+        .alert {
+            display: none;
+            background-color: #4caf50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAMSSLJQDAzl-8S00d7wNMQ-dVSJKtgsic",
+            authDomain: "saginialert.firebaseapp.com",
+            databaseURL: "https://saginialert-default-rtdb.firebaseio.com",
+            projectId: "saginialert",
+            storageBucket: "saginialert.appspot.com",
+            messagingSenderId: "583050302650",
+            appId: "1:583050302650:web:9692156cf008b37dab5e83"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // References to the database
+        const reportFormDB = firebase.database().ref('reportForm');
+        const carReportFormDB = firebase.database().ref('CarReportForm');
+
+        function fetchDataAndDisplay() {
+            reportFormDB.once('value', function(snapshot) {
+                const reports = snapshot.val();
+                displayData(reports, 'reportResults');
+            });
+
+            carReportFormDB.once('value', function(snapshot) {
+                const carReports = snapshot.val();
+                displayData(carReports, 'carReportResults');
+            });
+        }
+
+        function displayData(data, elementId) {
+            const results = document.getElementById(elementId);
+            results.innerHTML = '';
+
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    const item = data[key];
+                    const div = document.createElement('div');
+                    div.classList.add('result-item');
+                    div.innerHTML = `<h3>${item.name}</h3>
+                                    <p><strong>Description:</strong> ${item.description}</p>
+                                    <p><strong>Location:</strong> ${item.location}</p>
+                                    ${item.age ? `<p><strong>Age:</strong> ${item.age}</p>` : ''}
+                                    ${item.gender ? `<p><strong>Gender:</strong> ${item.gender}</p>` : ''}
+                                    ${item.height ? `<p><strong>Height:</strong> ${item.height}</p>` : ''}
+                                    ${item.model ? `<p><strong>Model:</strong> ${item.model}</p>` : ''}
+                                    ${item.color ? `<p><strong>Color:</strong> ${item.color}</p>` : ''}`;
+                    results.appendChild(div);
+                }
+            }
+        }
+
+        function searchDatabase() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const reportResults = document.getElementById('reportResults');
+            const carReportResults = document.getElementById('carReportResults');
+            const reportSection = document.getElementById('reportSection');
+            const carReportSection = document.getElementById('carReportSection');
+            const allResults = document.querySelectorAll('.result-item');
+
+            if (searchTerm === "") {
+                // If search input is empty, hide all results sections
+                reportSection.style.display = 'none';
+                carReportSection.style.display = 'none';
+                return;
+            }
+
+            let hasResults = false;
+            allResults.forEach(function(result) {
+                const nameElement = result.querySelector('h3');
+                if (nameElement && nameElement.innerText.toLowerCase().includes(searchTerm)) {
+                    result.style.display = 'block';
+                    hasResults = true;
+                } else {
+                    result.style.display = 'none';
+                }
+            });
+
+            // Show/hide sections based on results
+            reportSection.style.display = hasResults ? 'block' : 'none';
+            carReportSection.style.display = hasResults ? 'block' : 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchDataAndDisplay();
+            // Initially hide results sections
+            document.getElementById('reportSection').style.display = 'none';
+            document.getElementById('carReportSection').style.display = 'none';
+        });
+    </script>
 </head>
 <body>
-  <div class="header">  
-    <div class="header__logo">
-      <strong>SAGINI SYSTEM</strong>
+    <div class="header">  
+        <div class="header__logo">
+            <img src="images/Sagini logo.jpg" alt="Sagini Logo" class="headlogo-img">
+            <strong>SAGINI SYSTEM</strong>
+        </div>
+        <nav class="navbar">
+            <ul class="navbar__menu">
+                <li class="navbar__item">
+                    <a href="index.html" class="navbar__link"><img src="images/feather/home.svg" alt="home Icon"><span>Home</span></a>
+                </li>
+                <li class="navbar__item">
+                    <a href="car.html" class="navbar__link"><img src="images/feather/truck.svg" alt="truck Icon"><span>CARS</span></a>
+                </li>
+                <li class="navbar__item">
+                    <a href="person.html" class="navbar__link"><img src="images/feather/users.svg" alt="users Icon"><span>Persons</span></a>
+                </li>
+                <li class="navbar__item">
+                    <a href="database.html" class="navbar__link"><img src="images/feather/folder.svg" alt="folder Icon"><span>Database</span></a>
+                </li>
+                <li class="navbar__item">
+                    <a href="#" class="navbar__link"><img src="images/feather/upload.svg" alt="upload Icon"><span>Uploads</span></a>
+                </li>
+                <li class="navbar__item">
+                    <a href="login.html" class="navbar__link"><img src="images/feather/user.svg" alt="map-pin Icon"><span></span></a>
+                </li>
+            </ul>
+        </nav>
     </div>
-    
-    <nav class="navbar">
-      <ul class="navbar__menu">
-        <li class="navbar__item">
-          <a href="index.html" class="navbar__link"><img src="images/feather/home.svg" alt="home Icon"><span>Home</span></a>
-        </li>
-        <li class="navbar__item">
-          <a href="Database.html" class="navbar__link"><img src="images/feather/search.svg" alt="search Icon"><span>Search</span></a>
-        </li>
-        <li class="navbar__item">
-          <a href="#" class="navbar__link"><img src="images/feather/upload.svg" alt="upload Icon"><span>Uploads</span></a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-
-  <section id="search-section">
-    <h2>Search Missing Persons/Cars/Pets/Valuables</h2>
-    <form id="searchForm">
-      <label for="searchType">Search Type:</label>
-      <select id="searchType" onchange="toggleSearchFields()">
-        <option value="Person">Person</option>
-        <option value="Car">Car</option>
-        <option value="Pet">Pet</option>
-        <option value="Valuable">Valuable</option>
-      </select>
-
-      <div id="personSearchFields" class="search-fields">
-        <label for="searchName">Name:</label>
-        <input type="text" id="searchName">
-        
-        <label for="searchAge">Age:</label>
-        <input type="number" id="searchAge">
-        
-        <label for="searchGender">Gender:</label>
-        <select id="searchGender">
-          <option value="">Any</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
-      </div>
-
-      <div id="carSearchFields" class="search-fields" style="display: none;">
-        <label for="searchCarType">Car Type:</label>
-        <input type="text" id="searchCarType">
-        
-        <label for="searchCarModel">Car Model:</label>
-        <input type="text" id="searchCarModel">
-      </div>
-
-      <div id="petSearchFields" class="search-fields" style="display: none;">
-        <label for="searchPetType">Pet Type:</label>
-        <input type="text" id="searchPetType">
-        
-        <label for="searchPetName">Pet Name:</label>
-        <input type="text" id="searchPetName">
-      </div>
-
-      <div id="valuableSearchFields" class="search-fields" style="display: none;">
-        <label for="searchValuableType">Valuable Type:</label>
-        <input type="text" id="searchValuableType">
-        
-        <label for="searchValuableDescription">Description:</label>
-        <input type="text" id="searchValuableDescription">
-      </div>
-
-      <button type="button" onclick="searchDatabase()">Search</button>
-    </form>
-
-    <div id="results">
-      <!-- Search results will be displayed here -->
+    <div class="container" id="db">
+        <h1>Search Database</h1>
+        <input type="text" id="searchInput" onkeyup="searchDatabase()" placeholder="Search...">
+        <div id="reportSection" class="hidden">
+            <h2>Report Forms</h2>
+            <div id="reportResults" class="results"></div>
+        </div>
+        <div id="carReportSection" class="hidden">
+            <h2>Car Report Forms</h2>
+            <div id="carReportResults" class="results"></div>
+        </div>
     </div>
-  </section>
-
-  <script>
-    function toggleSearchFields() {
-      const searchType = document.getElementById('searchType').value;
-      document.querySelectorAll('.search-fields').forEach(field => field.style.display = 'none');
-      if (searchType === 'Person') {
-        document.getElementById('personSearchFields').style.display = 'block';
-      } else if (searchType === 'Car') {
-        document.getElementById('carSearchFields').style.display = 'block';
-      } else if (searchType === 'Pet') {
-        document.getElementById('petSearchFields').style.display = 'block';
-      } else if (searchType === 'Valuable') {
-        document.getElementById('valuableSearchFields').style.display = 'block';
-      }
-    }
-
-    function searchDatabase() {
-      const searchType = document.getElementById('searchType').value;
-      const resultsContainer = document.getElementById('results');
-      resultsContainer.innerHTML = '';
-
-      let query = {};
-      if (searchType === 'Person') {
-        const name = document.getElementById('searchName').value;
-        const age = document.getElementById('searchAge').value;
-        const gender = document.getElementById('searchGender').value;
-        
-        if (name) query.name = name;
-        if (age) query.age = age;
-        if (gender) query.gender = gender;
-      } else if (searchType === 'Car') {
-        const carType = document.getElementById('searchCarType').value;
-        const carModel = document.getElementById('searchCarModel').value;
-
-        if (carType) query.carType = carType;
-        if (carModel) query.carModel = carModel;
-      } else if (searchType === 'Pet') {
-        const petType = document.getElementById('searchPetType').value;
-        const petName = document.getElementById('searchPetName').value;
-
-        if (petType) query.petType = petType;
-        if (petName) query.petName = petName;
-      } else if (searchType === 'Valuable') {
-        const valuableType = document.getElementById('searchValuableType').value;
-        const valuableDescription = document.getElementById('searchValuableDescription').value;
-
-        if (valuableType) query.valuableType = valuableType;
-        if (valuableDescription) query.valuableDescription = valuableDescription;
-      }
-
-      // Firebase search logic
-      const dbRef = firebase.database().ref(searchType.toLowerCase() + 's'); // Adjust reference path if needed
-      dbRef.once('value', (snapshot) => {
-        const data = snapshot.val();
-        for (let key in data) {
-          let match = true;
-          for (let field in query) {
-            if (query[field] && data[key][field] !== query[field]) {
-              match = false;
-              break;
-            }
-          }
-          if (match) {
-            const resultItem = document.createElement('div');
-            resultItem.classList.add('result-item');
-            resultItem.innerHTML = `<pre>${JSON.stringify(data[key], null, 2)}</pre>`; // Replace with proper formatting
-            resultsContainer.appendChild(resultItem);
-          }
-        }
-        if (resultsContainer.innerHTML === '') {
-          resultsContainer.innerHTML = '<p>No results found</p>';
-        }
-      });
-    }
-
-    // Initialize Firebase (replace with your own config)
-    const firebaseConfig = {
-      apiKey: "your-api-key",
-      authDomain: "your-auth-domain",
-      databaseURL: "your-database-url",
-      projectId: "your-project-id",
-      storageBucket: "your-storage-bucket",
-      messagingSenderId: "your-messaging-sender-id",
-      appId: "your-app-id"
-    };
-    firebase.initializeApp(firebaseConfig);
-  </script>
 </body>
 </html>
+
