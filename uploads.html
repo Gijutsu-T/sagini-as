@@ -107,49 +107,11 @@
                                     ${item.gender ? `<p><strong>Gender:</strong> ${item.gender}</p>` : ''}
                                     ${item.height ? `<p><strong>Height:</strong> ${item.height}</p>` : ''}
                                     ${item.model ? `<p><strong>Model:</strong> ${item.model}</p>` : ''}
-                                    ${item.color ? `<p><strong>Color:</strong> ${item.color}</p>` : ''}`;
+                                    ${item.color ? `<p><strong>Color:</strong> ${itemc.color}</p>` : ''}`;
                     results.appendChild(div);
                 }
             }
         }
-
-        function searchDatabase() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const reportResults = document.getElementById('reportResults');
-            const carReportResults = document.getElementById('carReportResults');
-            const reportSection = document.getElementById('reportSection');
-            const carReportSection = document.getElementById('carReportSection');
-            const allResults = document.querySelectorAll('.result-item');
-
-            if (searchTerm === "") {
-                // If search input is empty, hide all results sections
-                reportSection.style.display = 'none';
-                carReportSection.style.display = 'none';
-                return;
-            }
-
-            let hasResults = false;
-            allResults.forEach(function(result) {
-                const nameElement = result.querySelector('h3');
-                if (nameElement && nameElement.innerText.toLowerCase().includes(searchTerm)) {
-                    result.style.display = 'block';
-                    hasResults = true;
-                } else {
-                    result.style.display = 'none';
-                }
-            });
-
-            // Show/hide sections based on results
-            reportSection.style.display = hasResults ? 'block' : 'none';
-            carReportSection.style.display = hasResults ? 'block' : 'none';
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            fetchDataAndDisplay();
-            // Initially hide results sections
-            document.getElementById('reportSection').style.display = 'none';
-            document.getElementById('carReportSection').style.display = 'none';
-        });
     </script>
 </head>
 <body>
@@ -176,23 +138,11 @@
                     <a href="uploads.html" class="navbar__link"><img src="images/feather/upload.svg" alt="upload Icon"><span>Uploads</span></a>
                 </li>
                 <li class="navbar__item">
-                    <a href="login.html" class="navbar__link"><img src="images/feather/user.svg" alt="map-pin Icon"><span></span></a>
+                    <a href="#" class="navbar__link"><img src="images/feather/user.svg" alt="map-pin Icon"><span></span></a>
                 </li>
             </ul>
         </nav>
     </div>
-    <div class="container" id="db">
-        <h1>Search Database</h1>
-        <input type="text" id="searchInput" onkeyup="searchDatabase()" placeholder="Search...">
-        <div id="reportSection" class="hidden">
-            <h2>Report Forms</h2>
-            <div id="reportResults" class="results"></div>
-        </div>
-        <div id="carReportSection" class="hidden">
-            <h2>Car Report Forms</h2>
-            <div id="carReportResults" class="results"></div>
-        </div>
-    </div>
+    
 </body>
 </html>
-
