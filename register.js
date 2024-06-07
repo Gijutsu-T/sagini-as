@@ -1,8 +1,8 @@
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
-    import { getAuth,signInWithEmailAndPassword  } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
     import {   GoogleAuthProvider,signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
 
-// Firebase Initialization
+
     // Firebase Initialization
     const firebaseConfig = {
       apiKey: "AIzaSyAMSSLJQDAzl-8S00d7wNMQ-dVSJKtgsic",
@@ -18,32 +18,30 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
-    auth.languageCode = 'en';
 
 
     document.getElementById('login-form').addEventListener('submit', function(event){
-        event.preventDefault();
-  
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-  
-        signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            // Signed up 
-            const user = userCredential.user;
-            alert('Logging In!');
-            window.location.href = 'index.html';
-            document.getElementById('login-form').reset();
-            // ...
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            alert(errorMessage);
-            // ..
-          });
-      });
+      event.preventDefault();
 
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed up 
+          const user = userCredential.user;
+          alert('Account Created Successfully!');
+          window.location.href = 'login.html';
+          document.getElementById('login-form').reset();
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          alert(errorMessage);
+          // ..
+        });
+    });
     const googleLogin = document.getElementById("google-id");
     googleLogin.addEventListener("click", function(){
       signInWithPopup(auth, provider)
