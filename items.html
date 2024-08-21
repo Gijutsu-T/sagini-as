@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="logo.jpg" type="image/x-icon">
+    <!-- Document title -->
+    <title>SAGINI SYSTEM - Report Missing item</title>
+    <!-- Stylesheets & Fonts -->
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i%7CRajdhani:400,600,700"
+        rel="stylesheet">
+    <!-- Plugins Stylesheets -->
+    <link rel="stylesheet" href="font-awesome.css">
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="items.css">
+    <link rel="stylesheet" href="lightgallery.min.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Responsive Stylesheet -->
+    <link rel="stylesheet" href="responsive.css">
+</head>
+
+<body>
+   
+    <!-- Header Start -->
+    <header class="position-absolute w-100">
+        <div class="container">
+            <div class="top-header d-none d-sm-flex justify-content-between align-items-center">
+                <div class="contact">
+                    
+                </div>
+                <nav class="d-flex aic">
+                    <a href="login.html"
+                   class="login"><i class="fa fa-user" aria-hidden="true"></i>Login</a>
+                  
+                </nav>
+            </div>
+            <nav class="navbar navbar-expand-md navbar-light">
+                <a class="navbar-brand" href="index.html"><img src=
+                    "logo.jpg" alt="Sagini"></a>
+                <div class="group d-flex align-items-center">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation"><span
+                            class="navbar-toggler-icon"></span></button>
+                    <a class="fa fa-search" href="#"><i class="fa fa-user"></i></a>
+                </div>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="person.html">Persons</a></li>
+                        <li class="nav-item"><a class="nav-link" href="cars.html">Cars</a></li>
+                        <li class="nav-item"><a class="nav-link" href="items.html">Items</a></li>
+                        <li class="nav-item"><a class="nav-link" href="pets.html">Pets</a></li>
+                        <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+                    </ul>
+                                   </span>
+                        </div>
+                    </form>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- Header End -->
+        <br/>
+<body>
+    <div class="form-container">
+        <h2>Report Missing Item</h2>
+        <form id="missing-item-form">
+            <!-- Item Details -->
+            <fieldset>
+                <legend>Item Details</legend>
+                <div class="item">
+                    <label for="item-name">Item Name<span>*</span></label>
+                    <input id="item-name" type="text" name="item-name" required />
+                </div>
+                <div class="item">
+                    <label for="item-description">Description<span>*</span></label>
+                    <textarea id="item-description" name="item-description" required></textarea>
+                </div>
+                <div class="item">
+                    <label for="item-color">Color<span>*</span></label>
+                    <input id="item-color" type="text" name="item-color" required />
+                </div>
+                <div class="item">
+                    <label for="item-location">Last Known Location<span>*</span></label>
+                    <input id="item-location" type="text" name="item-location" required />
+                </div>
+                <div class="item">
+                    <label for="item-date">Date Lost<span>*</span></label>
+                    <input id="item-date" type="date" name="item-date" required />
+                </div>
+            </fieldset>
+
+            <!-- Contact Information -->
+            <fieldset>
+                <legend>Contact Information</legend>
+                <div class="item">
+                    <label for="reporter-name">Your Name<span>*</span></label>
+                    <input id="reporter-name" type="text" name="reporter-name" required />
+                </div>
+                <div class="item">
+                    <label for="reporter-phone">Phone Number<span>*</span></label>
+                    <input id="reporter-phone" type="tel" name="reporter-phone" required />
+                </div>
+                <div class="item">
+                    <label for="reporter-email">Email Address<span>*</span></label>
+                    <input id="reporter-email" type="email" name="reporter-email" required />
+                </div>
+            </fieldset>
+
+            <button type="submit">Submit Report</button>
+        </form>
+    </div>
+     <!--jQuery-->
+ <script src="jquery-3.3.1.js"></script>
+ <!--Plugins-->
+ <script src="bootstrap.bundle.js"></script>
+ <script src="loaders.css.js"></script>
+ <script src="aos.js"></script>
+ <script src="swiper.min.js"></script>
+ <script src="lightgallery-all.min.js"></script>
+ <!--Main Script-->
+ <script src="main.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
+    <script src="items.js"></script>
+</body>
+</html>
